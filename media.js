@@ -28,7 +28,8 @@
     return null;
   }
   function applyOne(slot, src) {
-    var iframeUrl = /youtube\.com|youtu\.be/i.test(src) ? embedSrc(src) : null;
+    var streamIframe = /https:\/\/[a-z0-9-]+\.cloudflarestream\.com\/[\w-]+\/iframe/i.test(src);
+    var iframeUrl = (/youtube\.com|youtu\.be/i.test(src)) ? embedSrc(src) : (streamIframe ? src : null);
     if (iframeUrl) {
       var f = document.createElement('iframe');
       f.src = iframeUrl; f.style.width = '100%'; f.style.aspectRatio = '16 / 9'; f.style.border = '0';
@@ -49,6 +50,7 @@
   function knownMedia(src) {
     if (!src) return false;
     if (/youtube\.com|youtu\.be/i.test(src)) return true;
+    if (/https:\/\/[a-z0-9-]+\.cloudflarestream\.com\/[\w-]+\/iframe/i.test(src)) return true;
     return /\.(mp4|webm|mov|m4v|jpe?g|png|gif|svg)(\?|#|$)/i.test(src);
   }
   function manifestSrc(ids) {

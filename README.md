@@ -10,7 +10,7 @@ Static site for club member training (GitHub Pages). Modules m0-m7; diagrams are
 - The live page replaces the placeholder with a player automatically once the file exists. Test by refreshing the page.
 - Refresher slots (e.g. "M1-03/04 refresher") replay the referenced clips - no separate files needed.
 - Phone footage is already H.264 MP4 (the format browsers want). Keep it landscape. Compress to ~720p before committing, e.g. `ffmpeg -i in.mp4 -c:v libx264 -crf 28 -vf scale=-2:720 out.mp4`.
-- Optional `media.json` maps a slot ID to an externally hosted URL (Cloudflare Stream / unlisted YouTube) - checked before local files. Use it for large footage: this site is PUBLIC and GitHub Pages caps sites at ~1 GB with ~100 GB/month bandwidth.
+- Optional `media.json` maps a slot ID to an externally hosted video URL - checked before local files. Supported today: unlisted YouTube links (auto-embedded) and direct MP4 URLs. For Cloudflare Stream, use the official player embed URL (`https://<customer>.cloudflarestream.com/<video-id>/iframe`) or a direct .mp4 playback link - do NOT paste the watch.cloudflarestream.com share page. NOTE: the Stream iframe path is implemented but untested against a live Stream video until the club has one. Use it for large footage: this site is PUBLIC and GitHub Pages caps sites at ~1 GB with ~100 GB/month bandwidth.
 
 ## Media slot notes
 
