@@ -22,50 +22,61 @@
       .then(function (j) { manifest = j || {}; return manifest; });
   }
   function isVideo(src) { return /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(src); }
-  function apply(slot, src) {
+  function embedSrc(src) {
+    var m = src.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/|watch\.cloudflarestream\.com\/)([\w-]+)/i);
+    if (m) return 'https://www.youtube.com/embed/' + m[1];   // cloudflarestream ids work in the same iframe form
+    return null;
+  }
+  function applyOne(slot, src) {
+    var iframeUrl = /youtube\.com|youtu\.be|cloudflarestream/i.test(src) ? embedSrc(src) : null;
+    if (iframeUrl) {
+      var f = document.createElement('iframe');
+      f.src = iframeUrl; f.style.width = '100%'; f.style.aspectRatio = '16 / 9'; f.style.border = '0';
+      f.allow = 'fullscreen; picture-in-picture';
+      slot.appendChild(f);
+      return;
+    }
     if (isVideo(src)) {
       var v = document.createElement('video');
       v.controls = true; v.preload = 'metadata'; v.style.width = '100%'; v.src = src;
-      slot.innerHTML = ''; slot.appendChild(v);
+      slot.appendChild(v);
     } else {
       var im = document.createElement('img');
       im.src = src; im.style.width = '100%';
-      slot.innerHTML = ''; slot.appendChild(im);
+      slot.appendChild(im);
     }
   }
   function manifestSrc(ids) {
+    var out = [];
     for (var i = 0; i < ids.length; i++) {
       var e = manifest[ids[i]];
       if (!e) continue;
-      if (typeof e === 'object' && e.src) {
-        if (e.type === 'video') return e.src;
-        if (e.type === 'image') return e.src;
-        return isVideo(e.src) ? e.src : e.src;   // unknown type: pass through, apply() sniffs
-      }
-      if (typeof e === 'string') return e;
+      out.push(typeof e === 'string' ? e : (e.src || null));
     }
-    return null;
+    return out;
   }
   function upgrade(slot) {
     var ids = idsOf(slot);
     if (!ids.length) return Promise.resolve();
     return loadManifest().then(function (mf) {
       var ext = manifestSrc(ids);
-      if (ext) { apply(slot, ext); return; }
-      var chain = Promise.resolve(null);
-      ids.forEach(function (id) {
-        chain = chain.then(function (found) {
-          if (found) return found;
-          return probe('vid/' + id + '.mp4').then(function (ok) { return ok ? 'vid/' + id + '.mp4' : null; });
+      if (ext.length) {
+        slot.innerHTML = '';
+        ext.forEach(function (src) { applyOne(slot, src); });
+        return;
+      }
+      var vidProbes = [];
+      ids.forEach(function (id) { vidProbes.push(probe('vid/' + id + '.mp4').then(function (ok) { return ok ? 'vid/' + id + '.mp4' : null; })); });
+      var imgProbes = [];
+      ids.forEach(function (id) { imgProbes.push(probe('img/' + id + '.jpg').then(function (ok) { return ok ? 'img/' + id + '.jpg' : null; })); });
+      return Promise.all(vidProbes).then(function (vids) {
+        return Promise.all(imgProbes).then(function (imgs) {
+          var found = vids.filter(Boolean).concat(imgs.filter(Boolean));
+          if (!found.length) return;
+          slot.innerHTML = '';
+          found.forEach(function (src) { applyOne(slot, src); });
         });
       });
-      ids.forEach(function (id) {
-        chain = chain.then(function (found) {
-          if (found) return found;
-          return probe('img/' + id + '.jpg').then(function (ok) { return ok ? 'img/' + id + '.jpg' : null; });
-        });
-      });
-      return chain.then(function (found) { if (found) apply(slot, found); });
     });
   }
   var slots = document.querySelectorAll('.slot');
