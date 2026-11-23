@@ -23,7 +23,7 @@
   }
   function isVideo(src) { return /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(src); }
   function embedSrc(src) {
-    var m = src.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/|watch\.cloudflarestream\.com\/)([\w-]+)/i);
+    var m = src.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([\w-]+)/i);
     if (m) return 'https://www.youtube.com/embed/' + m[1];   // cloudflarestream ids work in the same iframe form
     return null;
   }
@@ -46,12 +46,18 @@
       slot.appendChild(im);
     }
   }
+  function knownMedia(src) {
+    if (!src) return false;
+    if (/youtube\.com|youtu\.be/i.test(src)) return true;
+    return /\.(mp4|webm|mov|m4v|jpe?g|png|gif|svg)(\?|#|$)/i.test(src);
+  }
   function manifestSrc(ids) {
     var out = [];
     for (var i = 0; i < ids.length; i++) {
       var e = manifest[ids[i]];
       if (!e) continue;
-      out.push(typeof e === 'string' ? e : (e.src || null));
+      var src = typeof e === 'string' ? e : (e.src || null);
+      if (src && knownMedia(src)) out.push(src);
     }
     return out;
   }
