@@ -6,10 +6,10 @@
     var m = el.textContent.match(/\b[MS]\d-\d\d[a-z]?(?:\/\d\d)?\b/g) || [];
     var ids = [];
     m.forEach(function (raw) {
-      raw.replace(/(\d\d)(\/\d\d)?$/, function (_, a, b) {
-        ids.push(raw.split('/')[0].replace(/\/[0-9]+$/, ''));
-        if (b) { ids.push(raw.replace('/' + b, '') + b); }
-      });
+      var parts = raw.split('/');
+      var prefix = parts[0].split('-')[0] + '-';
+      ids.push(parts[0]);
+      for (var i = 1; i < parts.length; i++) ids.push(prefix + parts[i]);
     });
     return ids.filter(function (v, i) { return ids.indexOf(v) === i; });
   }
@@ -21,8 +21,9 @@
     return fetch('media.json').then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; })
       .then(function (j) { manifest = j || {}; return manifest; });
   }
+  function isVideo(src) { return /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(src); }
   function apply(slot, src) {
-    if (/\.(mp4|webm|mov)$/i.test(src)) {
+    if (isVideo(src)) {
       var v = document.createElement('video');
       v.controls = true; v.preload = 'metadata'; v.style.width = '100%'; v.src = src;
       slot.innerHTML = ''; slot.appendChild(v);
@@ -32,11 +33,25 @@
       slot.innerHTML = ''; slot.appendChild(im);
     }
   }
+  function manifestSrc(ids) {
+    for (var i = 0; i < ids.length; i++) {
+      var e = manifest[ids[i]];
+      if (!e) continue;
+      if (typeof e === 'object' && e.src) {
+        if (e.type === 'video') return e.src;
+        if (e.type === 'image') return e.src;
+        return isVideo(e.src) ? e.src : e.src;   // unknown type: pass through, apply() sniffs
+      }
+      if (typeof e === 'string') return e;
+    }
+    return null;
+  }
   function upgrade(slot) {
     var ids = idsOf(slot);
     if (!ids.length) return Promise.resolve();
     return loadManifest().then(function (mf) {
-      for (var i = 0; i < ids.length; i++) { if (mf[ids[i]]) { apply(slot, mf[ids[i]]); return; } }
+      var ext = manifestSrc(ids);
+      if (ext) { apply(slot, ext); return; }
       var chain = Promise.resolve(null);
       ids.forEach(function (id) {
         chain = chain.then(function (found) {
