@@ -339,7 +339,44 @@ h1{font-size:30px}
 <table><thead><tr><th>Edge</th><th>Coming in from sea</th><th>Light</th></tr></thead><tbody><tr><td><strong>Port side</strong></td><td>red can (flat top)</td><td>red flashes</td></tr><tr><td><strong>Starboard side</strong></td><td>green cone (pointed top)</td><td>green flashes</td></tr></tbody></table>
 <p><strong>2. Black-and-yellow danger buoys ("cardinals").</strong> Two cones on top tell you which way the danger lies; the light tells you it's a cardinal. Pass on the named side:</p>
 <table><thead><tr><th>Buoy</th><th>Cones</th><th>Light (white)</th></tr></thead><tbody><tr><td><strong>North</strong></td><td>both up</td><td>constant quick flashes</td></tr><tr><td><strong>East</strong></td><td>one up, one down</td><td>3 quick flashes</td></tr><tr><td><strong>South</strong></td><td>both down</td><td>6 quick + 1 long flash</td></tr><tr><td><strong>West</strong></td><td>both sideways</td><td>9 quick flashes</td></tr></tbody></table>
-<p>Memory trick: think of a clock face — 3, 6, 9 o'clock for East, South, West.</p>
+<div class="svgwrap"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 680 500" class="diagram">
+<defs>
+  <clipPath id="cNclip"><path d="M0,28 C-10,26 -16,16 -16,6 C-16,-4 -10,-2 0,-3 C10,-2 16,-4 16,6 C16,16 10,26 0,28 Z"/></clipPath>
+  <g id="cNmark">
+    <path d="M-20,29 L20,29" stroke="#5B7C93" stroke-width="3"/>
+    <path d="M0,28 C-10,26 -16,16 -16,6 C-16,-4 -10,-2 0,-3 C10,-2 16,-4 16,6 C16,16 10,26 0,28 Z" fill="#F5C542"/>
+    <g clip-path="url(#cNclip)"><rect x="-17" y="-3" width="34" height="16" fill="#14120E"/><rect x="-17" y="13" width="34" height="16" fill="#F5C542"/></g>
+    <path d="M0,-3 L0,-32" stroke="#14120E" stroke-width="2.4"/>
+    <circle cx="0" cy="-17" r="3.4" fill="#FFFFFF" stroke="#14120E" stroke-width="1.2"/>
+  </g>
+  <clipPath id="cEclip"><path d="M0,28 C-10,26 -16,16 -16,6 C-16,-4 -10,-2 0,-3 C10,-2 16,-4 16,6 C16,16 10,26 0,28 Z"/></clipPath>
+  <g id="cEmark">
+    <path d="M-20,29 L20,29" stroke="#5B7C93" stroke-width="3"/>
+    <path d="M0,28 C-10,26 -16,16 -16,6 C-16,-4 -10,-2 0,-3 C10,-2 16,-4 16,6 C16,16 10,26 0,28 Z" fill="#F5C542"/>
+    <g clip-path="url(#cEclip)"><rect x="-17" y="-3" width="34" height="31" fill="#14120E"/><rect x="-17" y="8" width="34" height="12" fill="#F5C542"/></g>
+    <path d="M0,-3 L0,-32" stroke="#14120E" stroke-width="2.4"/>
+    <circle cx="0" cy="-17" r="3.4" fill="#FFFFFF" stroke="#14120E" stroke-width="1.2"/>
+  </g>
+  <clipPath id="cSclip"><path d="M0,28 C-10,26 -16,16 -16,6 C-16,-4 -10,-2 0,-3 C10,-2 16,-4 16,6 C16,16 10,26 0,28 Z"/></clipPath>
+  <g id="cSmark">
+    <path d="M-20,29 L20,29" stroke="#5B7C93" stroke-width="3"/>
+    <path d="M0,28 C-10,26 -16,16 -16,6 C-16,-4 -10,-2 0,-3 C10,-2 16,-4 16,6 C16,16 10,26 0,28 Z" fill="#F5C542"/>
+    <g clip-path="url(#cSclip)"><rect x="-17" y="-3" width="34" height="16" fill="#F5C542"/><rect x="-17" y="13" width="34" height="16" fill="#14120E"/></g>
+    <path d="M0,-3 L0,-32" stroke="#14120E" stroke-width="2.4"/>
+    <circle cx="0" cy="-17" r="3.4" fill="#FFFFFF" stroke="#14120E" stroke-width="1.2"/>
+  </g>
+  <clipPath id="cWclip"><path d="M0,28 C-10,26 -16,16 -16,6 C-16,-4 -10,-2 0,-3 C10,-2 16,-4 16,6 C16,16 10,26 0,28 Z"/></clipPath>
+  <g id="cWmark">
+    <path d="M-20,29 L20,29" stroke="#5B7C93" stroke-width="3"/>
+    <path d="M0,28 C-10,26 -16,16 -16,6 C-16,-4 -10,-2 0,-3 C10,-2 16,-4 16,6 C16,16 10,26 0,28 Z" fill="#F5C542"/>
+    <g clip-path="url(#cWclip)"><rect x="-17" y="-3" width="34" height="31" fill="#F5C542"/><rect x="-17" y="8" width="34" height="12" fill="#14120E"/></g>
+    <path d="M0,-3 L0,-32" stroke="#14120E" stroke-width="2.4"/>
+    <circle cx="0" cy="-17" r="3.4" fill="#FFFFFF" stroke="#14120E" stroke-width="1.2"/>
+  </g><marker id="crdA" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 Z" fill="#5B7C93"/></marker></defs><rect width="680" height="500" fill="#EFEAE0"/><text x="10" y="24" font-size="13.5" font-weight="bold" fill="#14120E">CARDINAL MARKS — the name tells you where the SAFE water is</text><text x="10" y="44" font-size="11" fill="#8A3A2E">Pass on the NAMED side of the mark; the danger sits on the other side. Topmark cones give the name; the white light confirms it.</text><circle cx="340" cy="265" r="140" fill="none" stroke="#8A8378" stroke-width="1.4"/><g transform="translate(340,265)">
+      <path d="M-26,6 C-18,14 18,14 26,6 L18,-8 C10,-14 -10,-14 -18,-8 Z" fill="#1A2A3A" transform="rotate(-12)"/>
+      <path d="M-30,16 Q-22,10 -14,16 T2,16 T18,16 T34,16" stroke="#5B7C93" stroke-width="2" fill="none"/>
+      <text y="42" font-size="11" font-weight="bold" fill="#8A3A2E" text-anchor="middle">THE DANGER — wreck, rock or shallow</text>
+    </g><g transform="translate(340,125)"><use xlink:href="#cNmark" href="#cNmark"/><path d="M0,-52 L-7,-40 L7,-40 Z" fill="#14120E"/><path d="M0,-64 L-7,-52 L7,-52 Z" fill="#14120E"/></g><text x="318" y="118" font-size="11.5" font-weight="bold" fill="#14120E" text-anchor="end">NORTH — constant quick white</text><text x="318" y="134" font-size="10.5" fill="#3E5A66" text-anchor="end">pass on its NORTH side</text><g transform="translate(480,265)"><use xlink:href="#cEmark" href="#cEmark"/><path d="M0,-38 L-7,-49 L7,-49 Z" fill="#14120E"/><path d="M-7,-49 L7,-49 L0,-61 Z" fill="#14120E"/></g><text x="528" y="260" font-size="11.5" font-weight="bold" fill="#14120E" text-anchor="start">EAST — 3 quick flashes</text><text x="528" y="276" font-size="10.5" fill="#3E5A66" text-anchor="start">pass on its EAST side</text><g transform="translate(340,400)"><use xlink:href="#cSmark" href="#cSmark"/><path d="M-7,-40 L7,-40 L0,-52 Z" fill="#14120E"/><path d="M-7,-52 L7,-52 L0,-64 Z" fill="#14120E"/></g><text x="340" y="464" font-size="11.5" font-weight="bold" fill="#14120E" text-anchor="middle">SOUTH — 6 quick + 1 long</text><text x="340" y="480" font-size="10.5" fill="#3E5A66" text-anchor="middle">pass on its SOUTH side</text><g transform="translate(200,265)"><use xlink:href="#cWmark" href="#cWmark"/><path d="M-7,-38 L7,-38 L0,-49 Z" fill="#14120E"/><path d="M0,-49 L-7,-61 L7,-61 Z" fill="#14120E"/></g><text x="150" y="260" font-size="11.5" font-weight="bold" fill="#14120E" text-anchor="end">WEST — 9 quick flashes</text><text x="150" y="276" font-size="10.5" fill="#3E5A66" text-anchor="end">pass on its WEST side</text><path d="M506,265 L522,265" stroke="#5B7C93" stroke-width="2.4" marker-end="url(#crdA)"/><path d="M340,434 L340,450" stroke="#5B7C93" stroke-width="2.4" marker-end="url(#crdA)"/><path d="M174,265 L158,265" stroke="#5B7C93" stroke-width="2.4" marker-end="url(#crdA)"/><text x="10" y="492" font-size="11" fill="#3E4A54">Clock-face trick: East = 3 flashes, South = 6 + 1 long, West = 9 — and North never stops. Yellow/black bands as drawn; the cones are what you read first.</text></svg></div><p>Memory trick: think of a clock face — 3, 6, 9 o'clock for East, South, West.</p>
 <p><strong>3. Black-and-red striped buoy</strong> — the danger is right underneath it. Flash-flashes twice. Give it a wide berth.</p>
 <p><strong>4. Red-and-white striped buoy</strong> — safe water all around, often the start of a channel. Pass any side.</p>
 <p><strong>5. All-yellow buoy</strong> — "special": a zone with its own rules. Check your chart or the app for what it means.</p>
