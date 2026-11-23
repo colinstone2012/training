@@ -148,4 +148,5 @@ idx++;setTimeout(()=>{if(idx<qs.length)render();else finish()},good?900:2200);}
 function finish(){const app=document.getElementById("quizapp");const passed=score>=PASS;
 app.innerHTML=`<div class="qcard"><div class="score ${passed?"pass":"fail"}">${score} / ${qs.length} - ${passed?"PASS":"KEEP WORKING"}</div><p style="margin-top:8px">${passed?"Nice sweep. Re-sit anytime - the bank serves a fresh set.":"Read the why notes above, then re-sit below."}</p><button onclick="start()">RE-SIT - fresh set</button></div>`;}
 const mid="M4";
-</script></body></html>
+</script><script src="media.js" defer></script>
+</body></html>
