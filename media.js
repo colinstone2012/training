@@ -1,33 +1,56 @@
 (function () {
-  function idOf(slot) {
+  var manifest = null;
+  function idsOf(slot) {
     var el = slot.querySelector('.slot-body');
-    if (!el) return null;
-    var m = el.textContent.match(/\b([MS]\d-\d\d[a-z]?)\b/);
-    return m ? m[1] : null;
+    if (!el) return [];
+    var m = el.textContent.match(/\b[MS]\d-\d\d[a-z]?(?:\/\d\d)?\b/g) || [];
+    var ids = [];
+    m.forEach(function (raw) {
+      raw.replace(/(\d\d)(\/\d\d)?$/, function (_, a, b) {
+        ids.push(raw.split('/')[0].replace(/\/[0-9]+$/, ''));
+        if (b) { ids.push(raw.replace('/' + b, '') + b); }
+      });
+    });
+    return ids.filter(function (v, i) { return ids.indexOf(v) === i; });
   }
   function probe(url) {
     return fetch(url, { method: 'HEAD' }).then(function (r) { return r.ok; }).catch(function () { return false; });
   }
+  function loadManifest() {
+    if (manifest !== null) return Promise.resolve(manifest);
+    return fetch('media.json').then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; })
+      .then(function (j) { manifest = j || {}; return manifest; });
+  }
+  function apply(slot, src) {
+    if (/\.(mp4|webm|mov)$/i.test(src)) {
+      var v = document.createElement('video');
+      v.controls = true; v.preload = 'metadata'; v.style.width = '100%'; v.src = src;
+      slot.innerHTML = ''; slot.appendChild(v);
+    } else {
+      var im = document.createElement('img');
+      im.src = src; im.style.width = '100%';
+      slot.innerHTML = ''; slot.appendChild(im);
+    }
+  }
   function upgrade(slot) {
-    var id = idOf(slot);
-    if (!id) return Promise.resolve();
-    return probe('vid/' + id + '.mp4').then(function (hasVideo) {
-      if (hasVideo) {
-        var v = document.createElement('video');
-        v.controls = true; v.preload = 'metadata'; v.style.width = '100%';
-        v.src = 'vid/' + id + '.mp4';
-        slot.innerHTML = '';
-        slot.appendChild(v);
-        return;
-      }
-      return probe('img/' + id + '.jpg').then(function (hasImg) {
-        if (hasImg) {
-          var im = document.createElement('img');
-          im.src = 'img/' + id + '.jpg'; im.style.width = '100%'; im.alt = id;
-          slot.innerHTML = '';
-          slot.appendChild(im);
-        }
+    var ids = idsOf(slot);
+    if (!ids.length) return Promise.resolve();
+    return loadManifest().then(function (mf) {
+      for (var i = 0; i < ids.length; i++) { if (mf[ids[i]]) { apply(slot, mf[ids[i]]); return; } }
+      var chain = Promise.resolve(null);
+      ids.forEach(function (id) {
+        chain = chain.then(function (found) {
+          if (found) return found;
+          return probe('vid/' + id + '.mp4').then(function (ok) { return ok ? 'vid/' + id + '.mp4' : null; });
+        });
       });
+      ids.forEach(function (id) {
+        chain = chain.then(function (found) {
+          if (found) return found;
+          return probe('img/' + id + '.jpg').then(function (ok) { return ok ? 'img/' + id + '.jpg' : null; });
+        });
+      });
+      return chain.then(function (found) { if (found) apply(slot, found); });
     });
   }
   var slots = document.querySelectorAll('.slot');
