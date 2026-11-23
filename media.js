@@ -24,11 +24,11 @@
   function isVideo(src) { return /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(src); }
   function embedSrc(src) {
     var m = src.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([\w-]+)/i);
-    if (m) return 'https://www.youtube.com/embed/' + m[1];   // cloudflarestream ids work in the same iframe form
+    if (m) return 'https://www.youtube.com/embed/' + m[1];   // youtube links convert to embed URLs
     return null;
   }
   function applyOne(slot, src) {
-    var iframeUrl = /youtube\.com|youtu\.be|cloudflarestream/i.test(src) ? embedSrc(src) : null;
+    var iframeUrl = /youtube\.com|youtu\.be/i.test(src) ? embedSrc(src) : null;
     if (iframeUrl) {
       var f = document.createElement('iframe');
       f.src = iframeUrl; f.style.width = '100%'; f.style.aspectRatio = '16 / 9'; f.style.border = '0';
